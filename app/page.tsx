@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, ArrowRight, CheckCircle, FileText, Heart, Lock, MapPin, Search, Shield, ShoppingBag, Smartphone, Stethoscope, UploadCloud, Users } from "react-feather";
+import { Activity, ArrowRight, CheckCircle, FileText, Heart, Lock, MapPin, Search, Shield, ShoppingBag, Smartphone, UploadCloud, Users } from "react-feather";
 
 const features = [
   { icon: Search, title: "Find medicines fast", copy: "Search live stock across verified pharmacies, compare prices and know what is available before leaving home." },
@@ -40,7 +40,7 @@ export default function LandingPage() {
           </div>
           <div className="hero-card-row">
             <div className="mini-health-card"><div className="mini-icon blue"><Heart size={19} /></div><div><span>Blood pressure</span><strong>118 / 76</strong><small>Today, 8:15 AM</small></div></div>
-            <div className="mini-health-card"><div className="mini-icon green"><Stethoscope size={19} /></div><div><span>Next appointment</span><strong>Dr. Adebayo</strong><small>12 Oct · 10:30 AM</small></div></div>
+            <div className="mini-health-card"><div className="mini-icon green"><Activity size={19} /></div><div><span>Next appointment</span><strong>Dr. Adebayo</strong><small>12 Oct · 10:30 AM</small></div></div>
           </div>
         </div>
       </section>
