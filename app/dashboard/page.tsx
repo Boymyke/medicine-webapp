@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, ArrowRight, Calendar, CheckCircle, FileText, Heart, MapPin, Pill, Plus, Search, Shield, ShoppingBag, Thermometer } from "react-feather";
+import { Activity, ArrowRight, Calendar, CheckCircle, FileText, Heart, MapPin, Package, Plus, Search, Shield, ShoppingBag, Thermometer } from "react-feather";
 import AppShell from "../components/AppShell";
 
 export default function DashboardPage() {
@@ -22,7 +22,7 @@ export default function DashboardPage() {
           <article className="app-card">
             <div className="card-heading"><div><h3>Today’s medications</h3><p>Stay on top of your medicine routine.</p></div><Link href="/vault" className="card-link">View all <ArrowRight size={16} /></Link></div>
             <div className="medication-list">
-              {[['Amlodipine 10mg','1 tablet','8:00 AM','Taken'],['Vitamin D3','1 capsule','1:00 PM','Due'],['Amoxicillin 500mg','1 capsule','8:00 PM','Later']].map(([name,dose,time,status]) => <div className="medication-item" key={name}><div className="medication-icon"><Pill size={20} /></div><div><strong>{name}</strong><span>{dose}</span></div><time>{time}</time><em className={status === 'Taken' ? 'done' : ''}>{status}</em></div>)}
+              {[['Amlodipine 10mg','1 tablet','8:00 AM','Taken'],['Vitamin D3','1 capsule','1:00 PM','Due'],['Amoxicillin 500mg','1 capsule','8:00 PM','Later']].map(([name,dose,time,status]) => <div className="medication-item" key={name}><div className="medication-icon"><Package size={20} /></div><div><strong>{name}</strong><span>{dose}</span></div><time>{time}</time><em className={status === 'Taken' ? 'done' : ''}>{status}</em></div>)}
             </div>
           </article>
 
