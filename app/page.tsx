@@ -1,297 +1,74 @@
 "use client";
 
-import {
-  Activity,
-  BarChart2,
-  Bell,
-  CheckCircle,
-  ChevronDown,
-  Clock,
-  CreditCard,
-  Database,
-  FileText,
-  Grid,
-  HelpCircle,
-  Home,
-  LogOut,
-  MapPin,
-  Menu,
-  Package,
-  Search,
-  Settings,
-  Shield,
-  ShoppingCart,
-  Sliders,
-  Truck,
-  Users,
-  X,
-  Zap,
-} from "react-feather";
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Activity, ArrowRight, CheckCircle, FileText, Heart, Lock, MapPin, Search, Shield, ShoppingBag, Smartphone, Stethoscope, UploadCloud, Users } from "react-feather";
 
-type MedicineRow = {
-  name: string;
-  generic: string;
-  inventory: string;
-  pharmacies: number;
-  price: string;
-  demand: string;
-  status: "Healthy" | "Low stock";
-};
-
-const medicineRows: MedicineRow[] = [
-  { name: "Augmentin 625mg", generic: "Amoxicillin + Clavulanate", inventory: "3,824 units", pharmacies: 118, price: "₦12,500", demand: "+18.4%", status: "Healthy" },
-  { name: "Panadol Extra", generic: "Paracetamol + Caffeine", inventory: "8,416 units", pharmacies: 204, price: "₦3,200", demand: "+12.7%", status: "Healthy" },
-  { name: "Coartem 20/120mg", generic: "Artemether + Lumefantrine", inventory: "2,931 units", pharmacies: 146, price: "₦4,800", demand: "+9.3%", status: "Healthy" },
-  { name: "Norvasc 10mg", generic: "Amlodipine", inventory: "682 units", pharmacies: 57, price: "₦8,900", demand: "+22.1%", status: "Low stock" },
+const features = [
+  { icon: Search, title: "Find medicines fast", copy: "Search live stock across verified pharmacies, compare prices and know what is available before leaving home." },
+  { icon: Shield, title: "Your private health vault", copy: "Keep prescriptions, allergies, lab results, medication history and important health documents in one secure place." },
+  { icon: Heart, title: "Track your health", copy: "Record blood pressure, glucose, weight, symptoms and personal notes so you can see your health history over time." },
+  { icon: ShoppingBag, title: "Order from pharmacies", copy: "Choose a nearby pharmacy, request delivery or pickup, and keep every medicine order in one timeline." },
+  { icon: FileText, title: "Prescription ready", copy: "Upload prescriptions and keep them connected to your medication history for easier refills and care coordination." },
+  { icon: Users, title: "Built for the care network", copy: "Pharmacies, HMOs and hospitals can connect through APIs without exposing the user's personal vault." },
 ];
 
-const navPrimary = [
-  { label: "Dashboard", icon: Home },
-  { label: "Find medicines", icon: Search },
-  { label: "Orders", icon: ShoppingCart },
-  { label: "Pharmacies", icon: MapPin },
-  { label: "Prescriptions", icon: FileText },
-  { label: "HMO & Insurance", icon: Shield },
-];
-
-const navBusiness = [
-  { label: "Inventory", icon: Package },
-  { label: "API & Integrations", icon: Database },
-  { label: "Analytics", icon: BarChart2 },
-  { label: "Settings", icon: Settings },
-];
-
-const availability = [
-  { label: "Pain relief", value: 94, amount: "12,486" },
-  { label: "Antibiotics", value: 86, amount: "8,942" },
-  { label: "Malaria", value: 79, amount: "6,735" },
-  { label: "Hypertension", value: 68, amount: "5,204" },
-];
-
-const chartPoints = "0,122 35,134 70,108 105,121 140,92 175,107 210,77 245,94 280,63 315,76 350,43 385,61 420,30 455,42 490,17 525,29";
-
-export default function HomePage() {
-  const [active, setActive] = useState("Dashboard");
-  const [search, setSearch] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [range, setRange] = useState("Last 12 months");
-
-  const filteredMedicines = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return medicineRows;
-    return medicineRows.filter((item) => `${item.name} ${item.generic}`.toLowerCase().includes(q));
-  }, [search]);
-
+export default function LandingPage() {
   return (
-    <main className="dashboard-shell">
-      <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`}>
-        <div className="brand">
-          <div className="brand-icon"><Activity size={20} /></div>
-          <div>
-            <strong>MediFind</strong>
-            <span>Medicine network</span>
-          </div>
-          <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close navigation"><X size={19} /></button>
+    <main className="landing-page">
+      <header className="landing-nav">
+        <Link href="/" className="landing-logo"><span><Activity size={23} /></span><strong>MediFind</strong></Link>
+        <nav><a href="#features">Features</a><a href="#vault">Health vault</a><a href="#network">For pharmacies</a></nav>
+        <div className="landing-nav-actions"><Link href="/dashboard" className="text-link">Sign in</Link><Link href="/dashboard" className="primary-link">Open my health space <ArrowRight size={17} /></Link></div>
+      </header>
+
+      <section className="landing-hero">
+        <div className="hero-copy-large">
+          <div className="hero-badge"><CheckCircle size={16} /> One health space for everyday care</div>
+          <h1>Find your medicine. Keep your health history. Stay in control.</h1>
+          <p>MediFind combines live pharmacy availability with a private personal health vault, so you can search, order, track and organise your health from one place.</p>
+          <div className="hero-actions"><Link href="/dashboard" className="primary-link large">Get started <ArrowRight size={18} /></Link><Link href="/medicines" className="secondary-link large"><Search size={18} /> Find medicine</Link></div>
+          <div className="hero-proof"><span><Shield size={17} /> Private health records</span><span><MapPin size={17} /> Nearby pharmacy stock</span><span><Smartphone size={17} /> Mobile-first</span></div>
         </div>
 
-        <nav className="side-nav">
-          {navPrimary.map(({ label, icon: Icon }) => (
-            <button
-              key={label}
-              onClick={() => { setActive(label); setMobileOpen(false); }}
-              className={active === label ? "active" : ""}
-            >
-              <Icon size={17} />
-              <span>{label}</span>
-              {label === "Orders" && <b>12</b>}
-            </button>
-          ))}
-        </nav>
-
-        <div className="nav-caption">PHARMACY BUSINESS</div>
-        <nav className="side-nav secondary-nav">
-          {navBusiness.map(({ label, icon: Icon }) => (
-            <button
-              key={label}
-              onClick={() => { setActive(label); setMobileOpen(false); }}
-              className={active === label ? "active" : ""}
-            >
-              <Icon size={17} />
-              <span>{label}</span>
-            </button>
-          ))}
-        </nav>
-
-        <div className="sidebar-spacer" />
-        <div className="sidebar-network-card">
-          <div className="network-art">
-            <div className="art-pill pill-a" />
-            <div className="art-pill pill-b" />
-            <div className="art-cross">+</div>
+        <div className="hero-product-card">
+          <div className="hero-product-top"><div><span>Good afternoon</span><strong>Your health, organised.</strong></div><div className="product-avatar">OM</div></div>
+          <div className="hero-search-demo"><Search size={20} /><span>Search a medicine near you...</span><button>Search</button></div>
+          <div className="hero-stats-grid">
+            <div><span>Health score</span><strong>82</strong><em>On track</em></div>
+            <div><span>Vault items</span><strong>14</strong><em>Secure</em></div>
+            <div><span>Medications</span><strong>3</strong><em>Active</em></div>
           </div>
-          <strong>Join the live network</strong>
-          <p>Sync pharmacy inventory and receive verified medicine orders.</p>
-          <button>Connect pharmacy</button>
-        </div>
-        <button className="logout"><LogOut size={16} /> Log out</button>
-      </aside>
-
-      <section className="workspace">
-        <header className="topbar">
-          <button className="menu-button" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Menu size={20} /></button>
-          <div className="global-search">
-            <Search size={17} />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search medicines, pharmacies, orders..." />
-            <kbd>⌘ K</kbd>
+          <div className="hero-card-row">
+            <div className="mini-health-card"><div className="mini-icon blue"><Heart size={19} /></div><div><span>Blood pressure</span><strong>118 / 76</strong><small>Today, 8:15 AM</small></div></div>
+            <div className="mini-health-card"><div className="mini-icon green"><Stethoscope size={19} /></div><div><span>Next appointment</span><strong>Dr. Adebayo</strong><small>12 Oct · 10:30 AM</small></div></div>
           </div>
-          <div className="topbar-actions">
-            <button className="top-icon" aria-label="Notifications"><Bell size={17} /><i /></button>
-            <button className="top-icon help" aria-label="Help"><HelpCircle size={17} /></button>
-            <div className="profile">
-              <div className="profile-avatar">OM</div>
-              <div className="profile-copy"><strong>Osondu</strong><span>Admin</span></div>
-              <ChevronDown size={14} />
-            </div>
-          </div>
-        </header>
-
-        <div className="dashboard-content">
-          <div className="welcome-row">
-            <div>
-              <p className="eyebrow">MEDICINE NETWORK OVERVIEW</p>
-              <h1>Growing access to medicines.</h1>
-              <p className="welcome-copy">Live stock visibility, pharmacy fulfilment and order intelligence across your network.</p>
-            </div>
-            <button className="location-control"><MapPin size={15} /> Lagos, Nigeria <ChevronDown size={14} /></button>
-          </div>
-
-          <section className="summary-layout">
-            <div className="summary-cards">
-              <article className="metric-card">
-                <div className="metric-icon"><Package size={20} /></div>
-                <span>Medicines tracked</span>
-                <div className="metric-value"><strong>48,290</strong><em>↑ 8.4%</em></div>
-              </article>
-              <article className="metric-card">
-                <div className="metric-icon"><Users size={20} /></div>
-                <span>Pharmacy partners</span>
-                <div className="metric-value"><strong>1,284</strong><em>↑ 6.2%</em></div>
-              </article>
-              <article className="metric-card">
-                <div className="metric-icon"><ShoppingCart size={20} /></div>
-                <span>Orders today</span>
-                <div className="metric-value"><strong>2,350</strong><em>↑ 14.8%</em></div>
-              </article>
-              <article className="metric-card">
-                <div className="metric-icon"><CheckCircle size={20} /></div>
-                <span>Fulfilment rate</span>
-                <div className="metric-value"><strong>96.4%</strong><em>↑ 3.1%</em></div>
-              </article>
-            </div>
-
-            <article className="network-promo">
-              <div>
-                <span>PHARMACY SAAS</span>
-                <h2>Make every shelf searchable.</h2>
-                <p>Connect live inventory and turn stock into verified orders.</p>
-                <button>Sync inventory <Zap size={15} /></button>
-              </div>
-              <div className="promo-visual">
-                <div className="visual-card vc-one"><Package size={22} /></div>
-                <div className="visual-card vc-two"><Activity size={22} /></div>
-                <div className="visual-card vc-three"><Truck size={22} /></div>
-              </div>
-            </article>
-          </section>
-
-          <section className="analytics-layout">
-            <article className="chart-panel">
-              <div className="panel-top">
-                <div>
-                  <span>Total medicine searches</span>
-                  <div className="big-number">549,735 <em>↑ 15.6%</em></div>
-                </div>
-                <button onClick={() => setRange(range === "Last 12 months" ? "Last 30 days" : "Last 12 months")}>{range} <ChevronDown size={13} /></button>
-              </div>
-
-              <div className="chart-wrap">
-                <div className="y-labels"><span>60k</span><span>45k</span><span>30k</span><span>15k</span><span>0</span></div>
-                <div className="chart-area">
-                  <div className="grid-line g1" /><div className="grid-line g2" /><div className="grid-line g3" /><div className="grid-line g4" /><div className="grid-line g5" />
-                  <svg className="line-chart" viewBox="0 0 525 150" preserveAspectRatio="none" aria-label="Medicine search trend chart">
-                    <defs>
-                      <linearGradient id="fillBlue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#2f7df6" stopOpacity="0.22" />
-                        <stop offset="100%" stopColor="#2f7df6" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <polygon points={`0,150 ${chartPoints} 525,150`} fill="url(#fillBlue)" />
-                    <polyline points={chartPoints} fill="none" stroke="#2f7df6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                    <line x1="315" y1="0" x2="315" y2="150" stroke="#a9c8fb" strokeWidth="1.5" strokeDasharray="4 4" />
-                    <circle cx="315" cy="76" r="6" fill="#fff" stroke="#2f7df6" strokeWidth="3" />
-                  </svg>
-                  <div className="chart-tooltip"><span>JULY 2026</span><strong>47,284 searches</strong><small>91% found nearby stock</small></div>
-                  <div className="month-row"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
-                </div>
-              </div>
-            </article>
-
-            <div className="right-stack">
-              <article className="insight-card">
-                <div className="insight-icon"><MapPin size={18} /></div>
-                <h3>In the last 30 days</h3>
-                <p><strong>91%</strong> of medicine searches found an in-stock pharmacy within 5 km.</p>
-                <div className="insight-footer"><span>Last 30 days <ChevronDown size={12} /></span><button>View map</button></div>
-              </article>
-
-              <article className="availability-card">
-                <div className="mini-panel-title"><div><h3>Availability by category</h3><p>Share of searches successfully matched</p></div><Sliders size={16} /></div>
-                <div className="availability-bars">
-                  {availability.map((item) => (
-                    <div className="bar-row" key={item.label}>
-                      <div className="bar-copy"><span>{item.label}</span><strong>{item.value}%</strong></div>
-                      <div className="bar-track"><i style={{ width: `${item.value}%` }} /></div>
-                      <small>{item.amount} searches</small>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <section className="table-panel">
-            <div className="table-heading">
-              <div><h3>Top medicines</h3><p>Fast-moving inventory across connected pharmacies</p></div>
-              <div className="table-actions"><button><Clock size={14} /> Today</button><button className="view-button">View inventory</button></div>
-            </div>
-            <div className="table-scroll">
-              <table>
-                <thead><tr><th>Medicine</th><th>Network inventory</th><th>Pharmacies</th><th>Starting price</th><th>Demand</th><th>Status</th></tr></thead>
-                <tbody>
-                  {filteredMedicines.map((item) => (
-                    <tr key={item.name}>
-                      <td><div className="medicine-cell"><div className="medicine-icon"><Package size={16} /></div><div><strong>{item.name}</strong><span>{item.generic}</span></div></div></td>
-                      <td>{item.inventory}</td>
-                      <td>{item.pharmacies}</td>
-                      <td><strong>{item.price}</strong></td>
-                      <td><span className="demand">{item.demand}</span></td>
-                      <td><span className={`stock-status ${item.status === "Low stock" ? "low" : ""}`}><i />{item.status}</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {filteredMedicines.length === 0 && <div className="empty-search">No medicines match “{search}”.</div>}
-            </div>
-          </section>
-
-          <footer className="dashboard-footer">
-            <span><Grid size={14} /> MediFind Network</span>
-            <p>Live pharmacy inventory • Orders • HMO/Hospital API</p>
-            <div><CreditCard size={14} /> Secure healthcare commerce</div>
-          </footer>
         </div>
       </section>
+
+      <section className="trust-strip"><span>LIVE PHARMACY INVENTORY</span><span>PERSONAL HEALTH VAULT</span><span>HEALTH TRACKING</span><span>HMO + HOSPITAL API</span></section>
+
+      <section className="landing-section" id="features">
+        <div className="section-heading-center"><span className="section-kicker">EVERYDAY HEALTH, CONNECTED</span><h2>More than a medicine search app.</h2><p>Built around what a person actually needs before, during and after getting care.</p></div>
+        <div className="feature-grid">{features.map(({ icon: Icon, title, copy }) => <article key={title} className="feature-card"><div className="feature-icon"><Icon size={23} /></div><h3>{title}</h3><p>{copy}</p></article>)}</div>
+      </section>
+
+      <section className="landing-section vault-showcase" id="vault">
+        <div className="vault-copy"><span className="section-kicker">MY HEALTH VAULT</span><h2>Your important health information should not live across WhatsApp, paper files and screenshots.</h2><p>Store what matters and bring it with you whenever you need care. Your vault is designed for personal records, not public sharing.</p>
+          <div className="vault-list"><span><Lock size={18} /> Private personal record space</span><span><UploadCloud size={18} /> Save prescriptions and lab files</span><span><Heart size={18} /> Keep vitals and symptoms together</span><span><FileText size={18} /> Track medication and care history</span></div>
+          <Link href="/vault" className="primary-link large">Open health vault <ArrowRight size={18} /></Link>
+        </div>
+        <div className="vault-ui-card"><div className="vault-ui-head"><div><strong>Health Vault</strong><span>All your important records</span></div><button>+ Add record</button></div><div className="vault-ui-grid"><div><span>Prescriptions</span><strong>6 files</strong></div><div><span>Lab results</span><strong>4 files</strong></div><div><span>Allergies</span><strong>2 listed</strong></div><div><span>Medical notes</span><strong>8 notes</strong></div></div><div className="vault-file"><div className="file-icon"><FileText size={20} /></div><div><strong>Malaria treatment prescription</strong><span>PDF · 04 Oct 2026</span></div><em>Saved</em></div><div className="vault-file"><div className="file-icon"><Heart size={20} /></div><div><strong>Blood pressure log</strong><span>12 readings · Updated today</span></div><em>Active</em></div></div>
+      </section>
+
+      <section className="network-section" id="network"><div><span className="section-kicker light">FOR PHARMACIES, HOSPITALS & HMOs</span><h2>A connected supply and care network.</h2><p>Pharmacies can sync inventory and receive orders. Hospitals and HMOs can integrate medicine availability and approved workflows through APIs.</p></div><div className="network-cards"><div><PackageBadge title="Pharmacy SaaS" copy="Inventory, orders, branches and fulfilment." /></div><div><PackageBadge title="Hospital API" copy="Medicine search and care workflow integrations." /></div><div><PackageBadge title="HMO connectivity" copy="Coverage checks and approved medicine pathways." /></div></div></section>
+
+      <section className="cta-section"><div><h2>Start with one health space.</h2><p>Search medicine, save records, track health and build a useful personal history over time.</p></div><Link href="/dashboard" className="primary-link light-button">Open MediFind <ArrowRight size={18} /></Link></section>
+
+      <footer className="landing-footer"><Link href="/" className="landing-logo"><span><Activity size={21} /></span><strong>MediFind</strong></Link><p>Medicine availability + personal health vault.</p><span>© 2026 MediFind</span></footer>
     </main>
   );
+}
+
+function PackageBadge({ title, copy }: { title: string; copy: string }) {
+  return <article className="network-card"><div><Shield size={21} /></div><h3>{title}</h3><p>{copy}</p></article>;
 }
